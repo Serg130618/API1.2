@@ -1,8 +1,14 @@
 package ru.netology.rest;
 
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
+
+
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.*;
+
 
 class MobileBankApiTestV1 {
     @Test
@@ -16,6 +22,12 @@ class MobileBankApiTestV1 {
           .get("/demo/accounts")
       // Проверки
       .then()
-          .statusCode(200);
+          .statusCode(200)
+          .contentType(ContentType.JSON)
+          .body("",hasSize(3))
+          .body(matchesJsonSchemaInClasspath("accounts.schema.json"));
+
+
+
     }
 }
